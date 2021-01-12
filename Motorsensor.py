@@ -9,26 +9,18 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(B, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(A, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+
 def my_callback(channel):
     global spin_count
-    if not GPIO.input(A):
+    if GPIO.input(A):
         if not GPIO.input(B):
             spin_count += 1
-        else:
-            spin_count -= 1
-    else:
-        if not GPIO.input(A):
-            spin_count += 1
-        else:
+        elif GPIO.input(B):
             spin_count -= 1
     print(spin_count)
 
 
-GPIO.add_event_detect(A, GPIO.FALLING, callback=my_callback, bouncetime=20)
+GPIO.add_event_detect(A, GPIO.RISING, callback=my_callback)
 while True:
-    print("runing")
+    print("Runing")
     time.sleep(1)
-# while True:
-#
-#     print(count)
-#     time.sleep(0.02)
